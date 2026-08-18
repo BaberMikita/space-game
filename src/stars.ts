@@ -15,4 +15,3 @@ function addStar(scene: THREE.Scene) {
 export function addStars(scene: THREE.Scene, count = 200) {
   for (let i = 0; i < count; i++) addStar(scene);
 }
-

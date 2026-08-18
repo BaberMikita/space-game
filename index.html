@@ -1,98 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Space game</title>
 
-    <!-- Tailwind + Iconify -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/iconify-icon@3/dist/iconify-icon.min.js"
-      defer
-    ></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space game</title>
 
-    <!-- Your CSS with .hud-btn etc. -->
-    <link rel="stylesheet" href="./src/hud.css" />
+  <!-- Tailwind + Iconify -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3/dist/iconify-icon.min.js" defer></script>
 
-    <style>
-      body {
-        margin: 0;
-        background: #000;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app"></div>
-    <div class="fixed bottom-2 right-2 z-50"></div>
-    <div class="fixed top-2 right-2 z-50 select-none">
-      <div class="flex flex-col gap-2 items-center">
-        <button id="btn-hand" class="hud-btn" title="Select Tool">
-          <iconify-icon
-            icon="game-icons:claw-hammer"
-            width="36"
-            height="36"
-          ></iconify-icon>
+  <!-- Your CSS with .hud-btn etc. -->
+  <link rel="stylesheet" href="./src/hud.css" />
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <div class="fixed bottom-2 right-2 z-50"></div>
+  <div class="fixed top-2 right-2 z-50 select-none">
+    <div class="flex flex-col gap-2 items-center">
+      <button id="btn-hand" class="hud-btn" title="Select Tool">
+        <iconify-icon icon="game-icons:claw-hammer" width="36" height="36"></iconify-icon>
+      </button>
+      <button id="btn-planet" class="hud-btn" data-planet="Earth">
+        <iconify-icon icon="game-icons:earth-africa-europe" width="36" height="36"></iconify-icon>
+      </button>
+
+      <button id="btn-planet" class="hud-btn" data-planet="Mars">
+        <iconify-icon icon="game-icons:ringed-planet" width="36" height="36"></iconify-icon>
+      </button>
+      <button id="btn-reset-target" class="hud-btn" title="Center on 0,0,0">
+        <iconify-icon icon="game-icons:return-arrow" width="36" height="36"></iconify-icon>
+      </button>
+
+      <div id="hand-submenu" class="hidden flex flex-col gap-2 items-center">
+        <button class="hud-btn" title="Fuel Tank" data-kind="fuel_mine" data-color="#c0151d" data-shape="cylinder">
+          <iconify-icon icon="game-icons:fuel-tank" width="36" height="36"></iconify-icon>
         </button>
-        <button id="btn-planet" class="hud-btn" data-planet="Earth">
-          <iconify-icon
-            icon="game-icons:earth-africa-europe"
-            width="36"
-            height="36"
-          ></iconify-icon>
+        <button class="hud-btn" title="Factory" data-kind="factory" data-color="#eaa937" data-shape="box">
+          <iconify-icon icon="game-icons:factory" width="36" height="36"></iconify-icon>
         </button>
-
-        <button id="btn-planet" class="hud-btn" data-planet="Mars">
-          <iconify-icon
-            icon="game-icons:ringed-planet"
-            width="36"
-            height="36"
-          ></iconify-icon>
-        </button>
-        <button id="btn-reset-target" class="hud-btn" title="Center on 0,0,0">
-          <iconify-icon
-            icon="game-icons:return-arrow"
-            width="36"
-            height="36"
-          ></iconify-icon>
+        <button class="hud-btn" title="Space Center" data-kind="space_center" data-color="#3399ff" data-shape="cone">
+          <iconify-icon icon="game-icons:space-shuttle" width="36" height="36"></iconify-icon>
         </button>
 
-        <div id="hand-submenu" class="hidden flex flex-col gap-2 items-center">
-          <button class="hud-btn" title="Fuel Tank">
-            <iconify-icon
-              icon="game-icons:fuel-tank"
-              width="36"
-              height="36"
-            ></iconify-icon>
-          </button>
-          <button class="hud-btn" title="Factory">
-            <iconify-icon
-              icon="game-icons:factory"
-              width="36"
-              height="36"
-            ></iconify-icon>
-          </button>
-          <button class="hud-btn" title="Space Center">
-            <iconify-icon
-              icon="game-icons:space-shuttle"
-              width="36"
-              height="36"
-            ></iconify-icon>
-          </button>
-
-          <button id="btn-hand-back" class="hud-btn" title="Back">
-            <iconify-icon
-              icon="tabler:arrow-left"
-              width="36"
-              height="36"
-            ></iconify-icon>
-          </button>
-        </div>
-        <div id="planet-menu ">
-          <span className="planet-reset">Reset</span>
-        </div>
+        <button id="btn-hand-back" class="hud-btn" title="Back">
+          <iconify-icon icon="tabler:arrow-left" width="36" height="36"></iconify-icon>
+        </button>
+      </div>
+      <div id="planet-menu ">
+        <span className="planet-reset">Reset</span>
       </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

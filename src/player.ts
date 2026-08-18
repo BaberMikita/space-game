@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import type { Planet } from './planet';
 import type { UnitState } from './units';
 import { Building, type BuildingState } from './building';
+import { BUILDING_PRESETS } from './buildingConfig';
 
 export type PlayerMode = 'common' | 'build';
 
@@ -30,6 +31,7 @@ export class Player {
   planet: Planet;
 
   unitState: UnitState;
+  selectedBuilding: { kind: BuildingState['kind']; color: number };
   constructor({ game, state }: { game: Game; state: PlayerState }) {
     this.game = game;
     this.state = state;
@@ -60,9 +62,19 @@ export class Player {
     document.addEventListener('keyup', this.onDocumentKeyUpR);
 
     this.updateRollOverVisibility();
+
+    // default selection for building tool
+    this.selectedBuilding = { kind: 'generic', color: 0x808080 };
   }
   private updateRollOverVisibility() {
     this.rollOverMesh.visible = this.mode === 'build';
+    try {
+      if (this.rollOverMesh && this.rollOverMesh.material) {
+        (this.rollOverMesh.material as THREE.MeshBasicMaterial).color.setHex(
+          this.selectedBuilding?.color || 0x808080
+        );
+      }
+    } catch (e) { }
   }
   setMode(mode: PlayerMode) {
     this.mode = mode;
@@ -169,14 +181,19 @@ export class Player {
           .invert();
         localPos.applyQuaternion(inverseRotation);
 
+        const kind = this.selectedBuilding?.kind || 'generic';
+        const preset = BUILDING_PRESETS[kind] || BUILDING_PRESETS.generic;
+
         const buildingState: BuildingState = {
           type: 'building',
           name: 'Building',
           position: new THREE.Vector2(localPos.x, localPos.y),
-          color: 0x808080,
-          length: 0.1,
-          width: 0.1,
-          height: 0.1,
+          kind,
+          // Always use preset color from BUILDING_PRESETS so central config controls colors
+          color: preset.color,
+          length: preset.length,
+          width: preset.width,
+          height: preset.height,
         };
 
         if (!continent) return;

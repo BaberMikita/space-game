@@ -52,6 +52,47 @@ export class HUD {
         }
       });
       syncBuildButtonUI();
+
+      // building selection buttons inside hand submenu
+      const submenuBtns = document.querySelectorAll<HTMLButtonElement>('#hand-submenu .hud-btn');
+      submenuBtns.forEach((btn) => {
+        const kind = btn.dataset.kind?.trim();
+        if (!kind) return;
+        btn.addEventListener('click', () => {
+          const colorHex = btn.dataset.color || '#808080';
+          const shape = btn.dataset.shape || 'box';
+          const colorNum = Number('0x' + colorHex.replace('#', ''));
+          if ((window as any).player) {
+            (window as any).player.selectedBuilding = {
+              kind: kind as any,
+              color: colorNum,
+            };
+            console.log('selectedBuilding set', (window as any).player.selectedBuilding);
+          }
+
+          // UI: mark pressed
+          submenuBtns.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+        });
+      });
+
+      // set default selection to first submenu button (if any)
+      const firstBtn = Array.from(submenuBtns).find((b) => b.dataset.kind);
+      if (firstBtn) {
+        const applyDefault = () => {
+          const kind = firstBtn.dataset.kind?.trim();
+          const colorHex = firstBtn.dataset.color || '#808080';
+          const colorNum = Number('0x' + colorHex.replace('#', ''));
+          if ((window as any).player) {
+            (window as any).player.selectedBuilding = { kind: kind as any, color: colorNum };
+            firstBtn.setAttribute('aria-pressed', 'true');
+            console.log('default selectedBuilding applied', (window as any).player.selectedBuilding);
+          } else {
+            setTimeout(applyDefault, 50);
+          }
+        };
+        applyDefault();
+      }
     });
 
     document

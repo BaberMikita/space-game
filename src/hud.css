@@ -12,15 +12,12 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
-
 .hud-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
-
 .hud-btn:active {
   background: rgba(255, 255, 255, 0.2);
 }
-
 .hud-btn:focus {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
@@ -32,7 +29,6 @@
   z-index: 50;
   user-select: none;
 }
-
 .hand-submenu {
   position: fixed;
   top: 0.5rem;
@@ -40,66 +36,6 @@
   z-index: 50;
   user-select: none;
 }
-
-.hud-toolbar-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 50;
-  user-select: none;
-}
-
-.hud-btn[aria-pressed='true'] {
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
-}
-
-.hud-btn {
-  width: 4rem;
-  height: 4rem;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.05);
-  transition: all 150ms linear;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.hud-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.hud-btn:active {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.hud-btn:focus {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-}
-
-.hud-toolbar {
-  position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 50;
-  user-select: none;
-}
-
-.hand-submenu {
-  position: fixed;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 50;
-  user-select: none;
-}
-
 .hud-toolbar-row {
   display: flex;
   flex-wrap: wrap;

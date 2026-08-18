@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { Game } from './game';
 import type { Continent } from './continent';
 import { Unit } from './units';
+import { BUILDING_PRESETS } from './buildingConfig';
 
 // Обновляем базовый state, добавляем 'kind' чтобы отличать фабрики от шахт
 export type BuildingState = {
@@ -59,19 +60,23 @@ export class Building extends Unit {
     this.state = state;
     this.continent = continent;
 
-    // Создаем кубик здания
-    const geometry = new THREE.BoxGeometry(
-      this.state.length,
-      this.state.width,
-      this.state.height
-    );
+    // Use presets as defaults for size/color; state values override presets when present
+    const preset = BUILDING_PRESETS[this.state.kind] || BUILDING_PRESETS.generic;
+    const length = this.state.length ?? preset.length;
+    const width = this.state.width ?? preset.width;
+    const height = this.state.height ?? preset.height;
 
-    // Подкрашиваем фабрики в желтый, а шахты в красный для наглядности
-    let buildingColor = this.state.color;
-    if (this.state.kind === 'factory') buildingColor = 0xeaa937; // Желтый
-    if (this.state.kind === 'fuel_mine') buildingColor = 0xc0151d; // Красный
+    // Всегда используем BoxGeometry (куб) — форма не меняется
+    const geometry = new THREE.BoxGeometry(length, width, height);
+
+    // color: prefer explicit state.color, otherwise preset color
+    const buildingColor = this.state.color ?? preset.color;
 
     const material = new THREE.MeshPhongMaterial({ color: buildingColor });
+    // ensure material color matches state/preset (force in case of later overrides)
+    try {
+      (material as any).color.setHex(buildingColor);
+    } catch (e) { }
     this.mesh = new THREE.Mesh(geometry, material);
 
     this.game.engine.scene.add(this.mesh);

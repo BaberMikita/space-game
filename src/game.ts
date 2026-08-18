@@ -6,6 +6,7 @@ import { Continent } from './continent';
 import { Camera } from './camera';
 import { addStars } from './stars';
 import { HUD } from './hud';
+import { BUILDING_PRESETS } from './buildingConfig';
 import { Player, type PlayerState } from './player';
 import './style.css';
 import type { Building, BuildingState } from './building';
@@ -93,6 +94,24 @@ export class Game {
     this.engine = new Engine({ game: this });
 
     this.state.sun = new Sun({ game: this });
+
+    // Apply building presets to any pre-defined building units (fill missing size/color)
+    for (const planet of this.state.planets) {
+      if (!planet.continents) continue;
+      for (const cont of planet.continents) {
+        if (!cont.units) continue;
+        for (const unit of cont.units) {
+          if (unit.type === 'building') {
+            const k = (unit as any).kind || 'generic';
+            const preset = BUILDING_PRESETS[k] || BUILDING_PRESETS.generic;
+            unit.length = (unit as any).length ?? preset.length;
+            unit.width = (unit as any).width ?? preset.width;
+            unit.height = (unit as any).height ?? preset.height;
+            unit.color = (unit as any).color ?? preset.color;
+          }
+        }
+      }
+    }
 
     this.engine.camera.position.z = 3;
     this.engine.camera.position.y = 3;
