@@ -29,16 +29,18 @@
       <button id="btn-hand" class="hud-btn" title="Select Tool">
         <iconify-icon icon="game-icons:claw-hammer" width="36" height="36"></iconify-icon>
       </button>
-      <button id="btn-planet" class="hud-btn" data-planet="Earth">
-        <iconify-icon icon="game-icons:earth-africa-europe" width="36" height="36"></iconify-icon>
-      </button>
+      <div id="planet-focus-controls" class="flex flex-col gap-2 items-center">
+        <button id="btn-planet" class="hud-btn" data-planet="Earth">
+          <iconify-icon icon="game-icons:earth-africa-europe" width="36" height="36"></iconify-icon>
+        </button>
 
-      <button id="btn-planet" class="hud-btn" data-planet="Mars">
-        <iconify-icon icon="game-icons:ringed-planet" width="36" height="36"></iconify-icon>
-      </button>
-      <button id="btn-reset-target" class="hud-btn" title="Center on 0,0,0">
-        <iconify-icon icon="game-icons:return-arrow" width="36" height="36"></iconify-icon>
-      </button>
+        <button id="btn-planet" class="hud-btn" data-planet="Mars">
+          <iconify-icon icon="game-icons:ringed-planet" width="36" height="36"></iconify-icon>
+        </button>
+        <button id="btn-reset-target" class="hud-btn" title="Center on 0,0,0">
+          <iconify-icon icon="game-icons:return-arrow" width="36" height="36"></iconify-icon>
+        </button>
+      </div>
 
       <div id="hand-submenu" class="hidden flex flex-col gap-2 items-center">
         <button class="hud-btn" title="Fuel Tank" data-kind="fuel_mine" data-color="#c0151d" data-shape="cylinder">
@@ -54,9 +56,6 @@
         <button id="btn-hand-back" class="hud-btn" title="Back">
           <iconify-icon icon="tabler:arrow-left" width="36" height="36"></iconify-icon>
         </button>
-      </div>
-      <div id="planet-menu ">
-        <span className="planet-reset">Reset</span>
       </div>
     </div>
   </div>

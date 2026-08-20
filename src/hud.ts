@@ -10,29 +10,36 @@ export class HUD {
       var hand = document.getElementById('btn-hand');
       var submenu = document.getElementById('hand-submenu');
       var back = document.getElementById('btn-hand-back');
+      var planetFocusControls = document.getElementById('planet-focus-controls');
 
-      if (!hand || !submenu || !back) return;
+      if (!hand || !submenu || !back || !planetFocusControls) return;
+      const handButton = hand;
+      const buildSubmenu = submenu;
+      const backButton = back;
+      const focusControls = planetFocusControls;
 
       function syncBuildButtonUI() {
         const p = window.player;
         if (!p) return;
-        if (p.mode === 'build') hand.classList.add('ring-2', 'ring-yellow-400');
-        else hand.classList.remove('ring-2', 'ring-yellow-400');
+        if (p.mode === 'build') handButton.classList.add('ring-2', 'ring-yellow-400');
+        else handButton.classList.remove('ring-2', 'ring-yellow-400');
       }
 
-      hand.addEventListener('click', function () {
+      handButton.addEventListener('click', function () {
         if (window.player) {
           window.player.toggleMode();
           syncBuildButtonUI();
         }
 
-        hand.classList.add('hidden');
-        submenu.classList.remove('hidden');
+        handButton.classList.add('hidden');
+        buildSubmenu.classList.remove('hidden');
+        focusControls.classList.add('hidden');
       });
 
-      back.addEventListener('click', function () {
-        submenu.classList.add('hidden');
-        hand.classList.remove('hidden');
+      backButton.addEventListener('click', function () {
+        buildSubmenu.classList.add('hidden');
+        handButton.classList.remove('hidden');
+        focusControls.classList.remove('hidden');
 
         if (window.player) {
           window.player.setMode('common');
@@ -41,9 +48,10 @@ export class HUD {
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !submenu.classList.contains('hidden')) {
-          submenu.classList.add('hidden');
-          hand.classList.remove('hidden');
+        if (e.key === 'Escape' && !buildSubmenu.classList.contains('hidden')) {
+          buildSubmenu.classList.add('hidden');
+          handButton.classList.remove('hidden');
+          focusControls.classList.remove('hidden');
 
           if (window.player) {
             window.player.setMode('common');
