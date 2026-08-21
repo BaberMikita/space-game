@@ -17,6 +17,11 @@ type GameState = {
   planets: PlanetState[];
 };
 
+export const BASE_RESOURCES = {
+  money: 100,
+  fuel: 100,
+} as const;
+
 export class Game {
   player: Player;
   players: Player[] = [];
@@ -32,19 +37,13 @@ export class Game {
         id: 1,
         name: 'Nikita',
         continents: [1],
-        resources: {
-          money: 100,
-          fuel: 100,
-        },
+        resources: { ...BASE_RESOURCES },
       },
       {
         id: 2,
         name: 'AI',
         continents: [],
-        resources: {
-          money: 100,
-          fuel: 100,
-        },
+        resources: { ...BASE_RESOURCES },
       },
     ],
     planets: [

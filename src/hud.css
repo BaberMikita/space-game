@@ -1,3 +1,35 @@
+.hud-resources {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: sans-serif;
+  user-select: none;
+}
+
+.hud-resource {
+  display: flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.hud-resource-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.hud-resource strong {
+  min-width: 2.5rem;
+  text-align: right;
+}
+
 .hud-btn {
   width: 4rem;
   height: 4rem;
@@ -12,12 +44,15 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
 .hud-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
 .hud-btn:active {
   background: rgba(255, 255, 255, 0.2);
 }
+
 .hud-btn:focus {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
@@ -29,6 +64,7 @@
   z-index: 50;
   user-select: none;
 }
+
 .hand-submenu {
   position: fixed;
   top: 0.5rem;
@@ -36,6 +72,7 @@
   z-index: 50;
   user-select: none;
 }
+
 .hud-toolbar-row {
   display: flex;
   flex-wrap: wrap;

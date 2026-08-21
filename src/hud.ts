@@ -6,6 +6,16 @@ export class HUD {
   constructor({ game }: { game: Game }) {
     this.game = game;
 
+    const updateResources = () => {
+      const resources = this.game.player?.state.resources;
+      if (!resources) return;
+
+      const money = document.getElementById('resource-money');
+      const fuel = document.getElementById('resource-fuel');
+      if (money) money.textContent = String(resources.money);
+      if (fuel) fuel.textContent = String(resources.fuel);
+    };
+
     document.addEventListener('DOMContentLoaded', function () {
       var hand = document.getElementById('btn-hand');
       var submenu = document.getElementById('hand-submenu');
@@ -60,6 +70,7 @@ export class HUD {
         }
       });
       syncBuildButtonUI();
+      updateResources();
 
       // building selection buttons inside hand submenu
       const submenuBtns = document.querySelectorAll<HTMLButtonElement>('#hand-submenu .hud-btn');
