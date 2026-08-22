@@ -6,7 +6,7 @@ import { Continent } from './continent';
 import { Camera } from './camera';
 import { addStars } from './stars';
 import { HUD } from './hud';
-import { BUILDING_PRESETS } from './buildingConfig';
+import { BUILDING_ECONOMY, BUILDING_PRESETS } from './buildingConfig';
 import { Player, type PlayerState } from './player';
 import './style.css';
 import type { Building, BuildingState } from './building';
@@ -29,6 +29,8 @@ export class Game {
   camera: Camera;
   hud: HUD;
   units: (Building | Planet | Continent)[] = [];
+  private economyTime = 0;
+  private lastFrameTime = performance.now();
 
   state: GameState = {
     sun: {},
@@ -62,17 +64,7 @@ export class Game {
             color: 0x337733,
             position: new THREE.Vector2(0.65, -0.25),
             units: [
-              {
-                id: 1,
-                type: 'building',
-                kind: 'fuel_mine', // ВОТ ТУТ МЕНЯЙ НА 'fuel_mine' ИЛИ 'factory'
-                color: 0x335588,
-                height: 0.1,
-                length: 0.1,
-                width: 0.1,
-                name: 'Main Factory',
-                position: new THREE.Vector2(0.1, 0.1),
-              },
+
             ],
           },
         ],
@@ -149,11 +141,54 @@ export class Game {
   }
 
   animate() {
+    const now = performance.now();
+    const deltaSeconds = Math.min((now - this.lastFrameTime) / 1000, 0.25);
+    this.lastFrameTime = now;
+    this.economyTime += deltaSeconds;
+
+    if (this.economyTime >= 1) {
+      this.updateEconomy(this.economyTime);
+      this.economyTime = 0;
+    }
+
     this.camera.update();
     this.engine.animate();
     for (const unit of this.units) {
       unit.update();
     }
+  }
+
+  private updateEconomy(seconds: number) {
+    const resources = this.player.state.resources;
+    const ownedContinentIds = new Set(this.player.state.continents);
+    const available = { money: resources.money, fuel: resources.fuel };
+    const changes = { money: 0, fuel: 0 };
+
+    for (const unit of this.units) {
+      if (unit.state.type !== 'building') continue;
+      if (!('continent' in unit)) continue;
+      if (!ownedContinentIds.has(unit.continent.state.id)) continue;
+
+      const rates = BUILDING_ECONOMY[unit.state.kind as keyof typeof BUILDING_ECONOMY];
+      const consumption = {
+        money: (rates.consumes?.money ?? 0) * seconds,
+        fuel: (rates.consumes?.fuel ?? 0) * seconds,
+      };
+      const canPay = available.money >= consumption.money && available.fuel >= consumption.fuel;
+      if (!canPay) continue;
+
+      for (const resource of ['money', 'fuel'] as const) {
+        available[resource] -= consumption[resource];
+        const production = (rates.produces?.[resource] ?? 0) * seconds;
+        available[resource] += production;
+        changes[resource] += production - consumption[resource];
+      }
+    }
+
+    resources.money += changes.money;
+    resources.fuel += changes.fuel;
+
+    this.hud.updateResources();
   }
 }
 declare global {

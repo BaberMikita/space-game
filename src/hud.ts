@@ -3,20 +3,20 @@ import { Game } from './game';
 export class HUD {
   game: Game;
 
+  updateResources = () => {
+    const resources = this.game.player?.state.resources;
+    if (!resources) return;
+
+    const money = document.getElementById('resource-money');
+    const fuel = document.getElementById('resource-fuel');
+    if (money) money.textContent = String(Math.floor(resources.money));
+    if (fuel) fuel.textContent = String(Math.floor(resources.fuel));
+  };
+
   constructor({ game }: { game: Game }) {
     this.game = game;
 
-    const updateResources = () => {
-      const resources = this.game.player?.state.resources;
-      if (!resources) return;
-
-      const money = document.getElementById('resource-money');
-      const fuel = document.getElementById('resource-fuel');
-      if (money) money.textContent = String(resources.money);
-      if (fuel) fuel.textContent = String(resources.fuel);
-    };
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
       var hand = document.getElementById('btn-hand');
       var submenu = document.getElementById('hand-submenu');
       var back = document.getElementById('btn-hand-back');
@@ -70,7 +70,7 @@ export class HUD {
         }
       });
       syncBuildButtonUI();
-      updateResources();
+      this.updateResources();
 
       // building selection buttons inside hand submenu
       const submenuBtns = document.querySelectorAll<HTMLButtonElement>('#hand-submenu .hud-btn');

@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import type { Planet } from './planet';
 import type { UnitState } from './units';
 import { Building, type BuildingState } from './building';
-import { BUILDING_PRESETS } from './buildingConfig';
+import { BUILDING_ECONOMY, BUILDING_PRESETS } from './buildingConfig';
 
 export type PlayerMode = 'common' | 'build';
 
@@ -172,6 +172,7 @@ export class Player {
         const continent = this.game.units.find(
           (o) => o.state.type === 'continent' && o.mesh === intersect.object
         ) as Continent | undefined;
+        if (!continent) return;
 
         const localPos = intersect.point
           .clone()
@@ -183,8 +184,14 @@ export class Player {
 
         const kind = this.selectedBuilding?.kind || 'generic';
         const preset = BUILDING_PRESETS[kind] || BUILDING_PRESETS.generic;
+        const cost = BUILDING_ECONOMY[kind]?.cost ?? 0;
+        if (this.state.resources.money < cost) {
+          console.warn(`Not enough money to build ${kind}. Required: ${cost}`);
+          return;
+        }
 
         const buildingState: BuildingState = {
+          id: this.game.units.length + 1,
           type: 'building',
           name: 'Building',
           position: new THREE.Vector2(localPos.x, localPos.y),
@@ -195,8 +202,6 @@ export class Player {
           width: preset.width,
           height: preset.height,
         };
-
-        if (!continent) return;
 
         //передать обьект континента взять его из массива континтентс, добавить логику выяснения какой обьект нужно передать
         const building = new Building({
@@ -211,6 +216,8 @@ export class Player {
         this.game.engine.scene.add(building.mesh);
         this.objects.push(building.mesh);
         this.game.units.push(building);
+        this.state.resources.money -= cost;
+        this.game.hud.updateResources();
       }
     }
   };
