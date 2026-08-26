@@ -76,7 +76,16 @@ export class Game {
         color: 0x883333,
         radius: 0.5,
         position: new THREE.Vector3(2, 0, -5),
-        continents: [],
+        continents: [{
+          id: 2,
+          type: 'continent',
+          height: 0.2,
+          color: 0x337733,
+          position: new THREE.Vector2(0.65, -0.25),
+          units: [
+
+          ],
+        },],
       },
     ],
   };
