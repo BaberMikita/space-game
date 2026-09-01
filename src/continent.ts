@@ -9,6 +9,7 @@ export type ContinentState = {
   type: 'continent';
   color: THREE.ColorRepresentation;
   position: THREE.Vector2;
+  scale: number;
   height: number;
   units: BuildingState[];
 };
@@ -34,8 +35,12 @@ export class Continent extends Unit {
     this.state = state;
     this.planet = planet;
 
-    // continent mesh
-    const size = { w: 0.8, h: 0.8, l: this.state.height };
+    const continentRadius = this.planet.state.radius * this.state.scale;
+    const size = {
+      w: continentRadius,
+      h: continentRadius * 0.8,
+      l: this.state.height * 1.25,
+    };
     const geometry = new THREE.BoxGeometry(size.w, size.h, size.l);
     const material = new THREE.MeshPhongMaterial({ color: state.color });
     const mesh = new THREE.Mesh(geometry, material);
@@ -44,8 +49,12 @@ export class Continent extends Unit {
     const position = this.planet.state.position.clone();
     const offset = new THREE.Vector3();
     const coords = this.convertCoordsToRad(this.state.position);
+    const continentDepth = size.l;
+    const inset = 0.22;
+    const surfaceDistance = this.planet.state.radius + continentDepth / 2 - inset;
+
     offset.setFromSphericalCoords(
-      this.planet.state.radius - 0.1,
+      surfaceDistance,
       coords.x,
       coords.y
     );

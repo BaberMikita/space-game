@@ -63,6 +63,7 @@ export class Game {
             height: 0.2,
             color: 0x337733,
             position: new THREE.Vector2(0.65, -0.25),
+            scale: 1,
             units: [
 
             ],
@@ -82,6 +83,7 @@ export class Game {
           height: 0.2,
           color: 0x337733,
           position: new THREE.Vector2(0.65, -0.25),
+          scale: 1,
           units: [
 
           ],
