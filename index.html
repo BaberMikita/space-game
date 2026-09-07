@@ -24,48 +24,103 @@
 <body>
   <div id="app"></div>
   <div class="fixed bottom-2 right-2 z-50"></div>
-  <div class="hud-resources" aria-label="Resources">
-    <div class="hud-resource">
-      <span class="hud-resource-label">Money</span>
-      <strong id="resource-money">0</strong>
-    </div>
-    <div class="hud-resource">
-      <span class="hud-resource-label">Fuel</span>
-      <strong id="resource-fuel">0</strong>
-    </div>
-  </div>
-  <div class="fixed top-2 right-2 z-50 select-none">
-    <div class="flex flex-col gap-2 items-center">
-      <button id="btn-hand" class="hud-btn" title="Select Tool">
-        <iconify-icon icon="game-icons:claw-hammer" width="36" height="36"></iconify-icon>
-      </button>
-      <div id="planet-focus-controls" class="flex flex-col gap-2 items-center">
-        <button id="btn-planet" class="hud-btn" data-planet="Earth">
-          <iconify-icon icon="game-icons:earth-africa-europe" width="36" height="36"></iconify-icon>
-        </button>
 
-        <button id="btn-planet" class="hud-btn" data-planet="Mars">
-          <iconify-icon icon="game-icons:ringed-planet" width="36" height="36"></iconify-icon>
-        </button>
-        <button id="btn-reset-target" class="hud-btn" title="Center on 0,0,0">
-          <iconify-icon icon="game-icons:return-arrow" width="36" height="36"></iconify-icon>
-        </button>
+  <div class="hud-shell">
+    <div class="hud-resources" aria-label="Resources">
+      <div class="hud-resource hud-resource-money">
+        <span class="hud-resource-icon">
+          <iconify-icon icon="game-icons:coin" width="18" height="18"></iconify-icon>
+        </span>
+        <div class="hud-resource-copy">
+          <span class="hud-resource-label">Money</span>
+          <strong id="resource-money">0</strong>
+        </div>
       </div>
 
-      <div id="hand-submenu" class="hidden flex flex-col gap-2 items-center">
-        <button class="hud-btn" title="Fuel Tank" data-kind="fuel_mine" data-color="#c0151d" data-shape="cylinder">
-          <iconify-icon icon="game-icons:fuel-tank" width="36" height="36"></iconify-icon>
-        </button>
-        <button class="hud-btn" title="Factory" data-kind="factory" data-color="#eaa937" data-shape="box">
-          <iconify-icon icon="game-icons:factory" width="36" height="36"></iconify-icon>
-        </button>
-        <button class="hud-btn" title="Space Center" data-kind="space_center" data-color="#3399ff" data-shape="cone">
-          <iconify-icon icon="game-icons:space-shuttle" width="36" height="36"></iconify-icon>
+      <div class="hud-resource hud-resource-fuel">
+        <span class="hud-resource-icon">
+          <iconify-icon icon="game-icons:gas-cylinder" width="18" height="18"></iconify-icon>
+        </span>
+        <div class="hud-resource-copy">
+          <span class="hud-resource-label">Fuel</span>
+          <strong id="resource-fuel">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-toolbar" aria-label="Planet and build controls">
+      <div class="hud-panel-group">
+        <button id="btn-hand" class="hud-btn hud-btn-primary" title="Build menu">
+          <span class="hud-btn-icon">
+            <iconify-icon icon="game-icons:claw-hammer" width="24" height="24"></iconify-icon>
+          </span>
+          <span class="hud-btn-text">Build</span>
         </button>
 
-        <button id="btn-hand-back" class="hud-btn" title="Back">
-          <iconify-icon icon="tabler:arrow-left" width="36" height="36"></iconify-icon>
-        </button>
+        <div id="planet-focus-controls" class="hud-panel-stack">
+          <button id="btn-planet" class="hud-btn" data-planet="Earth" title="Focus Earth">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:earth-africa-europe" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-text">Earth</span>
+          </button>
+
+          <button id="btn-planet" class="hud-btn" data-planet="Mars" title="Focus Mars">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:ringed-planet" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-text">Mars</span>
+          </button>
+
+          <button id="btn-reset-target" class="hud-btn" title="Center view">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:return-arrow" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-text">Center</span>
+          </button>
+        </div>
+
+        <div id="hand-submenu" class="hud-panel-stack hidden">
+          <button class="hud-btn hud-building-btn" title="Fuel Mine • 100" data-kind="fuel_mine" data-color="#c0151d"
+            data-shape="cylinder">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:fuel-tank" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-copy">
+              <span class="hud-btn-text">Fuel Mine</span>
+              <span class="hud-btn-meta">100</span>
+            </span>
+          </button>
+
+          <button class="hud-btn hud-building-btn" title="Factory • 100" data-kind="factory" data-color="#eaa937"
+            data-shape="box">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:factory" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-copy">
+              <span class="hud-btn-text">Factory</span>
+              <span class="hud-btn-meta">100</span>
+            </span>
+          </button>
+
+          <button class="hud-btn hud-building-btn" title="Space Center • 500" data-kind="space_center"
+            data-color="#3399ff" data-shape="cone">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="game-icons:space-shuttle" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-copy">
+              <span class="hud-btn-text">Space Center</span>
+              <span class="hud-btn-meta">500</span>
+            </span>
+          </button>
+
+          <button id="btn-hand-back" class="hud-btn hud-btn-back" title="Back">
+            <span class="hud-btn-icon">
+              <iconify-icon icon="tabler:arrow-left" width="22" height="22"></iconify-icon>
+            </span>
+            <span class="hud-btn-text">Back</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
