@@ -126,6 +126,8 @@ export class HUD {
             cam.focusInPlanetByName(name);
           else if (typeof cam.focusOnPlanetByName === 'function')
             cam.focusOnPlanetByName(name);
+
+          this.game.minimap?.focusPlanetByName(name);
         });
       });
 

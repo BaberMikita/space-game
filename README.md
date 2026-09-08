@@ -14,6 +14,9 @@ your solar system come to life — all running in the browser, no install needed
 - **Resource management** — track Money and Fuel live in the HUD.
 - **Planet focus** — jump the camera to Earth or Mars, or re-center the view.
 - **Orbit camera controls** — drag to rotate, scroll to zoom.
+- **Mini-map** — a wireframe sphere in the bottom-right corner mirrors the
+  focused planet's rotation and marks its continents; it switches
+  automatically when you focus a different planet.
 
 ## 🎮 How to play
 
@@ -86,6 +89,7 @@ src/
 ├── building.ts         # Building mesh + placement on continents
 ├── buildingConfig.ts   # Building presets (size/color) & economy (cost/rates)
 ├── player.ts           # Player input: build mode, pointer/raycast placement
+├── minimap.ts          # Bottom-right wireframe mini-map of the focused planet
 ├── hud.ts              # HUD wiring: resources, build menu, planet focus
 ├── sun.ts / stars.ts   # Sun and starfield background
 └── main.ts             # Entry point

@@ -6,6 +6,7 @@ import { Continent } from './continent';
 import { Camera } from './camera';
 import { addStars } from './stars';
 import { HUD } from './hud';
+import { Minimap } from './minimap';
 import { BUILDING_ECONOMY, BUILDING_PRESETS } from './buildingConfig';
 import { Player, type PlayerState } from './player';
 import './style.css';
@@ -28,6 +29,7 @@ export class Game {
   engine: Engine;
   camera: Camera;
   hud: HUD;
+  minimap: Minimap;
   units: (Building | Planet | Continent)[] = [];
   private economyTime = 0;
   private lastFrameTime = performance.now();
@@ -144,6 +146,7 @@ export class Game {
     this.player = this.players[0];
     this.camera = new Camera({ game: this });
     this.hud = new HUD({ game: this });
+    this.minimap = new Minimap({ game: this });
 
     window.player = this.player;
 
@@ -163,6 +166,7 @@ export class Game {
     }
 
     this.camera.update();
+    this.minimap.update();
     this.engine.animate();
     for (const unit of this.units) {
       unit.update();
