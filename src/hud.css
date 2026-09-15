@@ -203,6 +203,39 @@ body {
   box-shadow: inset 0 0 0 1px rgba(119, 215, 255, 0.3), 0 0 0 1px rgba(119, 215, 255, 0.28);
 }
 
+.minimap-frame {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  width: 168px;
+  height: 168px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  box-shadow: var(--panel-shadow);
+  pointer-events: none;
+}
+
+.minimap-frame canvas {
+  display: block;
+}
+
+.minimap-label {
+  position: absolute;
+  top: 0.45rem;
+  left: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hud-muted);
+  z-index: 1;
+}
+
 @media (max-width: 640px) {
   .hud-shell {
     left: 0.5rem;
@@ -221,5 +254,10 @@ body {
 
   .hud-building-btn {
     width: 10.5rem;
+  }
+
+  .minimap-frame {
+    right: 0.5rem;
+    bottom: 0.5rem;
   }
 }

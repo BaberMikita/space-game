@@ -4,6 +4,11 @@ import { Planet, type PlanetState } from './planet';
 import { Unit } from './units';
 import { Building, type BuildingState } from './building';
 
+/** Maps a continent's stored [-1, 1] position to spherical (phi, theta) angles in radians. */
+export function continentPositionToSpherical(position: THREE.Vector2): THREE.Vector2 {
+  return new THREE.Vector2((position.x + 1) * Math.PI, (position.y + 1) * Math.PI);
+}
+
 export type ContinentState = {
   id: number;
   type: 'continent';
