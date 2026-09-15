@@ -140,7 +140,9 @@ export class Game {
     }
     addStars(this.engine.scene, 300);
     const light = new THREE.AmbientLight(0xaaaaff, 0.2);
-    const gridHelper = new THREE.GridHelper(50, 50);
+    const gridHelper = new THREE.GridHelper(50, 50, 0x3a3a55, 0x2a2a3d);
+    (gridHelper.material as THREE.Material).transparent = true;
+    (gridHelper.material as THREE.Material).opacity = 0.45;
     this.engine.scene.add(light, gridHelper);
 
     this.player = this.players[0];
