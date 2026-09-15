@@ -18,6 +18,10 @@ your solar system come to life — all running in the browser, no install needed
   focused planet's rotation and marks its continents; it switches
   automatically when you focus a different planet.
 
+## Gameplay preview
+
+![SpaceGame gameplay prototype](./space-game.jpg)
+
 ## 🎮 How to play
 
 1. **Launch the game** (see [Run locally](#-run-locally) below or open it on
