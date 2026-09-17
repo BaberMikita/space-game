@@ -138,6 +138,8 @@ export class HUD {
     resetTargetBtn?.addEventListener('click', () => {
       this.game.camera.controls.target.set(0, 0, 0);
       this.game.camera.controls.update();
+
+      this.game.minimap?.showUniverse();
     });
   }
 }

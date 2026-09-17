@@ -5,6 +5,10 @@ import type { Building } from './building';
 const MINIMAP_SIZE = 320;
 const BORDER_COLOR = 0x5cc6ff;
 const VIEW_MARGIN = 1.2;
+const SUN_COLOR = 0xffcc66;
+const FOCUS_RING_COLOR = 0x8be0ff;
+
+export type MinimapMode = 'continent' | 'universe';
 
 /**
  * Bottom-right mini-map: renders a small top-down view of the continent that
@@ -22,8 +26,10 @@ export class Minimap {
   continentPlane: THREE.Mesh | null = null;
   continentBorder: THREE.LineLoop | null = null;
   buildingsGroup: THREE.Group = new THREE.Group();
+  planetMarkersGroup: THREE.Group = new THREE.Group();
   focusedPlanetId: number;
   activeContinentId: number | null = null;
+  mode: MinimapMode = 'continent';
 
   constructor({ game }: { game: Game }) {
     this.game = game;
@@ -42,11 +48,33 @@ export class Minimap {
 
     // Match the minimap orientation to the planet surface view.
     this.scene.scale.x = -1;
-    this.scene.add(this.buildingsGroup);
+    this.scene.add(this.buildingsGroup, this.planetMarkersGroup);
     this.buildContinentView(this.focusedPlanetId);
 
     this.focusPlanetByName = this.focusPlanetByName.bind(this);
+    this.showUniverse = this.showUniverse.bind(this);
     this.update = this.update.bind(this);
+  }
+
+  private clearContinentMeshes() {
+    if (this.continentPlane) {
+      this.scene.remove(this.continentPlane);
+      this.continentPlane.geometry.dispose();
+      (this.continentPlane.material as THREE.Material).dispose();
+      this.continentPlane = null;
+    }
+    if (this.continentBorder) {
+      this.scene.remove(this.continentBorder);
+      this.continentBorder.geometry.dispose();
+      (this.continentBorder.material as THREE.Material).dispose();
+      this.continentBorder = null;
+    }
+    this.buildingsGroup.clear();
+  }
+
+  private setLabel(text: string) {
+    const label = document.querySelector('#minimap-container .minimap-label-text');
+    if (label) label.textContent = text;
   }
 
   /** Picks the continent to display for a given planet: the player's owned
@@ -63,18 +91,8 @@ export class Minimap {
     const planetState = this.game.state.planets.find((p) => p.id === planetId);
     const continent = this.pickContinent(planetId);
 
-    if (this.continentPlane) {
-      this.scene.remove(this.continentPlane);
-      this.continentPlane.geometry.dispose();
-      (this.continentPlane.material as THREE.Material).dispose();
-      this.continentPlane = null;
-    }
-    if (this.continentBorder) {
-      this.scene.remove(this.continentBorder);
-      this.continentBorder.geometry.dispose();
-      (this.continentBorder.material as THREE.Material).dispose();
-      this.continentBorder = null;
-    }
+    this.clearContinentMeshes();
+    this.planetMarkersGroup.clear();
 
     if (!planetState || !continent) {
       this.activeContinentId = null;
@@ -142,17 +160,73 @@ export class Minimap {
     }
   }
 
-  /** Switches which planet the mini-map represents (hooked up to the Earth/Mars HUD buttons). */
+  /** Switches which planet the mini-map represents (hooked up to the Earth/Mars HUD buttons).
+   * Also brings the map back from universe mode into continent mode, even if
+   * that planet was already the focused one. */
   focusPlanetByName(name: string) {
     const state = this.game.state.planets.find((p) => p.name === name);
-    if (!state || state.id === this.focusedPlanetId) return;
+    if (!state) return;
+    if (this.mode === 'continent' && state.id === this.focusedPlanetId) return;
 
     this.focusedPlanetId = state.id;
+    this.mode = 'continent';
     this.buildContinentView(state.id);
+    this.setLabel('Map');
+  }
+
+  /** Switches the mini-map to a system-wide view showing the sun and every
+   * planet's position (hooked up to the "Center" HUD button). */
+  showUniverse() {
+    this.mode = 'universe';
+    this.clearContinentMeshes();
+    this.activeContinentId = null;
+    this.buildUniverseView();
+    this.setLabel('System');
+  }
+
+  private buildUniverseView() {
+    this.planetMarkersGroup.clear();
+
+    const sunGeometry = new THREE.CircleGeometry(0.12, 20);
+    const sunMaterial = new THREE.MeshBasicMaterial({ color: SUN_COLOR });
+    const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+    sun.position.set(0, 0, 0.01);
+    this.planetMarkersGroup.add(sun);
+
+    let maxExtent = 1;
+    for (const planet of this.game.state.planets) {
+      const x = planet.position.x;
+      const y = -planet.position.z;
+      maxExtent = Math.max(maxExtent, Math.hypot(x, y) + planet.radius);
+
+      const markerRadius = Math.max(planet.radius * 0.5, 0.08);
+      const markerGeometry = new THREE.CircleGeometry(markerRadius, 20);
+      const markerMaterial = new THREE.MeshBasicMaterial({ color: planet.color });
+      const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+      marker.position.set(x, y, 0.01);
+      this.planetMarkersGroup.add(marker);
+
+      if (planet.id === this.focusedPlanetId) {
+        const ringGeometry = new THREE.RingGeometry(markerRadius * 1.3, markerRadius * 1.55, 24);
+        const ringMaterial = new THREE.MeshBasicMaterial({ color: FOCUS_RING_COLOR });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.position.set(x, y, 0.015);
+        this.planetMarkersGroup.add(ring);
+      }
+    }
+
+    const half = maxExtent * VIEW_MARGIN;
+    this.camera.left = -half;
+    this.camera.right = half;
+    this.camera.top = half;
+    this.camera.bottom = -half;
+    this.camera.updateProjectionMatrix();
   }
 
   update() {
-    this.refreshBuildings();
+    if (this.mode === 'continent') {
+      this.refreshBuildings();
+    }
     this.renderer.render(this.scene, this.camera);
   }
 }
