@@ -9,6 +9,7 @@ your solar system come to life — all running in the browser, no install needed
 ## ✨ Features
 
 - **3D solar system** rendered with Three.js — orbit the Sun, Earth and Mars.
+- **Procedural starfield skybox** with subtle nebula coloring and softly glowing stars.
 - **Building & economy system** — construct buildings that cost money and
   produce/consume resources over time.
 - **Resource management** — track Money and Fuel live in the HUD.
